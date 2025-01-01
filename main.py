@@ -52,6 +52,12 @@ def main():
         for updatable in updatable_group:
             updatable.update(dt)
 
+        #Check for collisions
+        for asteroid in asteroid_group:
+            if player.collides_with(asteroid):
+                print("Game Over")
+                return
+
         BLACK = (0, 0, 0)
         #screen.fill(BLACK)
         screen.fill("black")
