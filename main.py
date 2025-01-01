@@ -10,6 +10,9 @@ print(f"Screen height: {SCREEN_HEIGHT}")
 fps = pygame.time.Clock()
 dt = 0
 
+updatable_group = pygame.sprite.Group()
+drawable_group = pygame.sprite.Group()
+
 from player import Player  # Import the Player class from player.py
 
 def main():
@@ -18,7 +21,8 @@ def main():
     
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  # Instantiate Player
 
-    
+    updatable_group.add(player)
+    drawable_group.add(player)
     
     #Game Loop
     while True:
@@ -30,12 +34,19 @@ def main():
                 return
     
         
-        player.update(dt)
+        #player.update(dt)
+        for updatable in updatable_group:
+            updatable.update(dt)
+
         BLACK = (0, 0, 0)
         #screen.fill(BLACK)
         screen.fill("black")
-        player.draw(screen)
+        #player.draw(screen)
+        for drawable in drawable_group:
+            drawable.draw(screen)
+
         pygame.display.flip()
+
 
         #Limit the game to 60 frames per second
         #clock.tick(60)
