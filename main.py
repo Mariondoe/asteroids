@@ -5,6 +5,9 @@ import pygame
 
 print("Starting asteroids!")
 from constants import *
+from player import Player  # Import the Player class from player.py
+from asteroid import Asteroid  # Import the Asteroid class from asteroid.py
+from asteroidfield import AsteroidField  # Import the AsteroidField class from asteroidfield.py
 print(f"Screen width: {SCREEN_WIDTH}")
 print(f"Screen height: {SCREEN_HEIGHT}")
 fps = pygame.time.Clock()
@@ -13,16 +16,27 @@ dt = 0
 updatable_group = pygame.sprite.Group()
 drawable_group = pygame.sprite.Group()
 
-from player import Player  # Import the Player class from player.py
+AsteroidField.containers = (updatable_group)  # Set containers attribute
+
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  # Instantiate Player
+    asteroid_field = AsteroidField() # Instantiate AsteroidField
+
+    asteroid_field.containers = (updatable_group, drawable_group)  # Set containers attribute
 
     updatable_group.add(player)
     drawable_group.add(player)
+
+    asteroid_group = pygame.sprite.Group()
+
+    Asteroid.containers = (asteroid_group, drawable_group, updatable_group)
+
+    updatable_group.add(asteroid_field)
+
     
     #Game Loop
     while True:
