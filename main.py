@@ -73,8 +73,12 @@ def main():
             
             for shot in shot_group:
                 if asteroid.collides_with(shot):
-                    asteroid.kill()
+                    new_asteroid_1, new_asteroid_2 = asteroid.split()
                     shot.kill()
+                    if new_asteroid_1 is not None:
+                        asteroid_group.add(new_asteroid_1, new_asteroid_2)
+                        drawable_group.add(new_asteroid_1, new_asteroid_2)
+                        updatable_group.add(new_asteroid_1, new_asteroid_2)
                     break
     
         BLACK = (0, 0, 0)
