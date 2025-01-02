@@ -22,8 +22,10 @@ AsteroidField.containers = (updatable_group)  # Set containers attribute
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  # Instantiate Player
+
+    shot_group = pygame.sprite.Group()    
+
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, shot_group)  # Instantiate Player
     asteroid_field = AsteroidField() # Instantiate AsteroidField
 
     asteroid_field.containers = (updatable_group, drawable_group)  # Set containers attribute
@@ -36,6 +38,11 @@ def main():
     Asteroid.containers = (asteroid_group, drawable_group, updatable_group)
 
     updatable_group.add(asteroid_field)
+
+    updatable_group.add(shot_group)
+    drawable_group.add(shot_group)
+
+
 
     
     #Game Loop
@@ -50,12 +57,18 @@ def main():
         
         #player.update(dt)
         for updatable in updatable_group:
+            
             updatable.update(dt)
+
+        #shot_group.update(dt)
+        for shot in shot_group:
+            #print("Updating shot")
+            shot.update(dt)
 
         #Check for collisions
         for asteroid in asteroid_group:
             if player.collides_with(asteroid):
-                print("Game Over")
+                print("Game Over!")
                 return
 
         BLACK = (0, 0, 0)
@@ -65,12 +78,14 @@ def main():
         for drawable in drawable_group:
             drawable.draw(screen)
 
+        #add these to work elswehere later
+        for shot in shot_group:
+            shot.draw(screen)
+
         pygame.display.flip()
 
 
-        #Limit the game to 60 frames per second
-        #clock.tick(60)
-        #dt = fps.tick() / 1000
+        
 
 
 
